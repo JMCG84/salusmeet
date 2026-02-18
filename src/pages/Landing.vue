@@ -19,10 +19,11 @@ import PublicLayout from "../layouts/PublicLayaout.vue";
       </p>
 
       <div class="mt-6 flex gap-3">
-        <button
-          class="px-5 py-2.5 rounded-xl bg-teal-600 text-white font medium shadow-sm hover:bg-teal-700 transition">
-          Únete
-        </button>
+        <RouterLink
+          to="/register"
+          class="px-5 py-2.5 rounded-xl bg-teal-600 text-white font medium border hover:bg-teal-700 transition">
+          Únete Ahora
+        </RouterLink>
 
         <button
           class="px-5 py-2.5 rounded-xl bg-white text-slate-900 font medium border hover:bg-slate-50 transition">

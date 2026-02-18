@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import PublicLayout from "../layouts/PublicLayaout.vue";
+import logoUrl from "../assets/salusmeet-logo.svg";
 </script>
 
 <template>
   <PublicLayout>
     <section class="bg-white border rounded-2xl shadow-sm p-8">
+      <div class="flex items-center gap-3">
+        <img :src="logoUrl" alt="Salusmeet" class="h-10 w-auto sm:h-12" />
+        <span
+          class="text-sm font-medium text-teal-700 bg-teal-50 border border-teal-100 px-3 py-1 rounded-full">
+          Comunidad de Apoyo</span
+        >
+      </div>
+
       <h1 class="text-3xl font-bold text-slate-900">
         SalusMeet
         <span class="text-teal-600">.</span>

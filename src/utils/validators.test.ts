@@ -16,5 +16,7 @@ describe("isValidEmail", () => {
     expect(isValidEmail("user@")).toBe(false);
     expect(isValidEmail("user@domain")).toBe(false);
     expect(isValidEmail("a@@b.com")).toBe(false);
+    expect(isValidEmail("a@.com")).toBe(false);
+    expect(isValidEmail("a@com.")).toBe(false);
   });
 });

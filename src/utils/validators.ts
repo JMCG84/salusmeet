@@ -12,5 +12,8 @@ export function isValidEmail(email: string): boolean {
   if (!domain.includes(".")) {
     return false;
   }
+  if (domain.startsWith(".") || domain.endsWith(".")) {
+    return false;
+  }
   return true;
 }

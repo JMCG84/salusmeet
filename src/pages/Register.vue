@@ -16,6 +16,9 @@ const errors = reactive({
   password: "",
 });
 
+const inputBaseClasses =
+  "mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 transition";
+
 //Helpers para mantener código limpio
 function clearErrors() {
   errors.name = "";
@@ -63,7 +66,12 @@ function handleSubmit() {
             <input
               v-model="form.name"
               type="text"
-              class="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-teal-500"
+              :class="[
+                inputBaseClasses,
+                errors.name
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-slate-300 focus:ring-teal-500',
+              ]"
               placeholder="Tu Nombre" />
             <p v-if="errors.name" class="mt-1 text-sm text-red-600">
               {{ errors.name }}
@@ -77,6 +85,12 @@ function handleSubmit() {
             <input
               v-model="form.email"
               type="email"
+              :class="[
+                inputBaseClasses,
+                errors.email
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-slate-300 focus:ring-teal-500',
+              ]"
               class="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-teal-500"
               placeholder="tu@email.com" />
             <p v-if="errors.email" class="mt-1 text-sm text-red-600">
@@ -90,7 +104,12 @@ function handleSubmit() {
             <input
               v-model="form.password"
               type="password"
-              class="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-teal-500"
+              :class="[
+                inputBaseClasses,
+                errors.password
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-slate-300 focus:ring-teal-500',
+              ]"
               placeholder="********" />
             <p v-if="errors.password" class="mt-1 text-sm text-red-600">
               {{ errors.password }}

@@ -2,6 +2,10 @@
 import PublicLayout from "../layouts/PublicLayaout.vue";
 import { reactive } from "vue";
 import { isValidEmail } from "../utils/validators";
+import {
+  validateRegister,
+  hasRegisterErrors,
+} from "../utils/registerValidator";
 
 //estado del formulario
 const form = reactive({
@@ -27,23 +31,15 @@ function clearErrors() {
 }
 
 function validate(): boolean {
-  clearErrors();
-  //nombre debe tener al menos 3 caracteres
-  if (form.name.trim().length < 3) {
-    errors.name = "El nombre debe tener al menos 3 caracteres.";
-  }
-  //email usando función de testeo
-  if (!isValidEmail(form.email)) {
-    errors.email = "Por favor ingresa un email válido.";
-  }
-  //contraseña debe tener al menos 6 caracteres
-  if (form.password.length < 6) {
-    errors.password = "La contraseña debe tener al menos 6 caracteres.";
-  }
-  //si hay algún error, no es válido
-  const hasErrors = Boolean(errors.name || errors.email || errors.password);
-  return !hasErrors;
+  const nextErrors = validateRegister(form);
+
+  errors.name = nextErrors.name;
+  errors.email = nextErrors.email;
+  errors.password = nextErrors.password;
+
+  return !hasRegisterErrors(nextErrors);
 }
+
 function handleSubmit() {
   if (!validate()) return;
   //aqui llamare a auth.service.register(form)

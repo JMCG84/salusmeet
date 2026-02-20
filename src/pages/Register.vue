@@ -1,5 +1,51 @@
 <script setup lang="ts">
 import PublicLayout from "../layouts/PublicLayaout.vue";
+import { reactive } from "vue";
+import { isValidEmail } from "../utils/validators";
+
+//estado del formulario
+const form = reactive({
+  name: "",
+  email: "",
+  password: "",
+});
+
+const errors = reactive({
+  name: "",
+  email: "",
+  password: "",
+});
+
+//Helpers para mantener código limpio
+function clearErrors() {
+  errors.name = "";
+  errors.email = "";
+  errors.password = "";
+}
+
+function validate(): boolean {
+  clearErrors();
+  //nombre debe tener al menos 3 caracteres
+  if (form.name.trim().length < 3) {
+    errors.name = "El nombre debe tener al menos 3 caracteres.";
+  }
+  //email usando función de testeo
+  if (!isValidEmail(form.email)) {
+    errors.email = "Por favor ingresa un email válido.";
+  }
+  //contraseña debe tener al menos 6 caracteres
+  if (form.password.length < 6) {
+    errors.password = "La contraseña debe tener al menos 6 caracteres.";
+  }
+  //si hay algún error, no es válido
+  const hasErrors = Boolean(errors.name || errors.email || errors.password);
+  return !hasErrors;
+}
+function handleSubmit() {
+  if (!validate()) return;
+  //aqui llamare a auth.service.register(form)
+  console.log("Formulario válido, enviando datos", { ...form });
+}
 </script>
 
 <template>
@@ -9,15 +55,19 @@ import PublicLayout from "../layouts/PublicLayaout.vue";
         <h1 class="text-2xl font-bold text-slate-900">Crear Cuenta</h1>
         <p class="mt-2 text-slate-600">Únete a la comunidad SalusMeet</p>
 
-        <form class="mt-6 space-y-4">
+        <form @submit.prevent="handleSubmit" class="mt-6 space-y-4">
           <div>
             <label class="block text-sm font-medium text-slate-700"
               >Nombre</label
             >
             <input
+              v-model="form.name"
               type="text"
               class="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-teal-500"
               placeholder="Tu Nombre" />
+            <p v-if="errors.name" class="mt-1 text-sm text-red-600">
+              {{ errors.name }}
+            </p>
           </div>
 
           <div>
@@ -25,18 +75,26 @@ import PublicLayout from "../layouts/PublicLayaout.vue";
               >Email</label
             >
             <input
+              v-model="form.email"
               type="email"
               class="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-teal-500"
               placeholder="tu@email.com" />
+            <p v-if="errors.email" class="mt-1 text-sm text-red-600">
+              {{ errors.email }}
+            </p>
           </div>
           <div>
             <label class="block text-sm font-medium text-slate-700"
               >Contraseña</label
             >
             <input
+              v-model="form.password"
               type="password"
               class="mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-teal-500"
               placeholder="********" />
+            <p v-if="errors.password" class="mt-1 text-sm text-red-600">
+              {{ errors.password }}
+            </p>
           </div>
 
           <button

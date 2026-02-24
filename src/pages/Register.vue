@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import PublicLayout from "../layouts/PublicLayaout.vue";
 import { reactive } from "vue";
-import { isValidEmail } from "../utils/validators";
 import {
   validateRegister,
   hasRegisterErrors,

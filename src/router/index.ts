@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { registerGuards } from "./guards";
 
 const routes = [
   {
@@ -20,6 +21,7 @@ const routes = [
     path: "/app",
     name: "home",
     component: () => import("../pages/Home.vue"),
+    meta: { requiresAuth: true },
   },
 ];
 
@@ -27,3 +29,6 @@ export const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+//activamos los guards
+registerGuards(router);

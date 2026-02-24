@@ -5,6 +5,8 @@ import {
   validateRegister,
   hasRegisterErrors,
 } from "../utils/registerValidator";
+import { authService } from "../services/auth.service";
+import { useRouter } from "vue-router";
 
 //estado del formulario
 const form = reactive({
@@ -22,12 +24,7 @@ const errors = reactive({
 const inputBaseClasses =
   "mt-1 w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 transition";
 
-//Helpers para mantener código limpio
-function clearErrors() {
-  errors.name = "";
-  errors.email = "";
-  errors.password = "";
-}
+const router = useRouter();
 
 function validate(): boolean {
   const nextErrors = validateRegister(form);
@@ -39,10 +36,22 @@ function validate(): boolean {
   return !hasRegisterErrors(nextErrors);
 }
 
-function handleSubmit() {
+async function handleSubmit() {
   if (!validate()) return;
-  //aqui llamare a auth.service.register(form)
-  console.log("Formulario válido, enviando datos", { ...form });
+
+  const res = await authService.register({
+    name: form.name,
+    email: form.email,
+    password: form.password,
+  });
+  if (res.ok) {
+    await router.push("/app");
+    return;
+  }
+
+  errors.name = res.errors.name;
+  errors.email = res.errors.email;
+  errors.password = res.errors.password;
 }
 </script>
 
@@ -113,7 +122,7 @@ function handleSubmit() {
 
           <button
             type="submit"
-            class="w-full rounded-xl bg-teal-600 text-white py-2 font-medium py-2.5 shadow-sm hover:bg-teal-700 transition">
+            class="w-full rounded-xl bg-teal-600 text-white font-medium py-2.5 shadow-sm hover:bg-teal-700 transition">
             Crear Cuenta
           </button>
         </form>
